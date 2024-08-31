@@ -7,6 +7,18 @@ HonorSpyStandings = HonorSpy:NewModule("HonorSpyStandings", "AceDB-2.0")
 
 local playerName = UnitName("player");
 
+local function IsAlliance(race)
+  return race == "Human" or race == "Dwarf" or race == "Gnome" or race == "NightElf" or race == "BloodElf"
+end
+
+local function IsSameFactionAsMe(playerRace,otherRace)
+  if otherRace == nil then
+    return false
+  end
+  
+  return IsAlliance(playerRace) == IsAlliance(otherRace)
+end
+
 function HonorSpyStandings:OnEnable()
   if not T:IsRegistered("HonorSpyStandings") then
     T:Register("HonorSpyStandings",
@@ -47,14 +59,23 @@ end
 
 function HonorSpyStandings:BuildStandingsTable()
   local t = { }
+  local _,playerRace = UnitRace("player")
   for playerName, player in pairs(HonorSpy.db.realm.hs.currentStandings) do
-    table.insert(t, {playerName, player.class, player.thisWeekHonor, player.lastWeekHonor, player.standing, player.RP, player.rank, player.last_checked})
+    if IsSameFactionAsMe(playerRace,player.race) then
+      table.insert(t, {playerName, player.class, player.thisWeekHonor, player.lastWeekHonor, player.standing, player.RP, player.rank, player.last_checked})
+    end
   end
+  
   local sort_column = 3; -- ThisWeekHonor
-  if (HonorSpy.db.realm.hs.sort == L["Rank"]) then sort_column = 6; end
+  if (HonorSpy.db.realm.hs.sort == L["Standing"]) then
+    sort_column = 5;
+  elseif (HonorSpy.db.realm.hs.sort == L["Rank"]) then
+    sort_column = 6;
+  end
   table.sort(t, function(a,b)
     return a[sort_column] > b[sort_column]
     end)
+  
   return t
 end
 

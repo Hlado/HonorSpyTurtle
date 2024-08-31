@@ -314,7 +314,7 @@ function BuildMenu()
 			HonorSpy.db.realm.hs.sort = v;
 			HonorSpyStandings:Refresh();
 		end,
-		validate = {L["Rank"], L["ThisWeekHonor"]},
+		validate = {L["Rank"], L["ThisWeekHonor"], L["Standing"]},
 	}
 	options.args["export"] = {
 		type = "execute",
