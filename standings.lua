@@ -7,16 +7,20 @@ HonorSpyStandings = HonorSpy:NewModule("HonorSpyStandings", "AceDB-2.0")
 
 local playerName = UnitName("player");
 
-local function IsAlliance(race)
+local function IsAllianceRace(race)
   return race == "Human" or race == "Dwarf" or race == "Gnome" or race == "NightElf" or race == "BloodElf"
 end
 
-local function IsSameFactionAsMe(playerRace,otherRace)
-  if otherRace == nil then
-    return false
+local function IsSameFactionAsMe(race,class,playerRace)
+  if race ~= nil then
+    return IsAllianceRace(playerRace) == IsAllianceRace(race)
+  else
+    if IsAllianceRace(playerRace) then
+      return class == "PALADIN"
+    else
+      return class == "SHAMAN"
+    end
   end
-  
-  return IsAlliance(playerRace) == IsAlliance(otherRace)
 end
 
 function HonorSpyStandings:OnEnable()
@@ -61,7 +65,7 @@ function HonorSpyStandings:BuildStandingsTable()
   local t = { }
   local _,playerRace = UnitRace("player")
   for playerName, player in pairs(HonorSpy.db.realm.hs.currentStandings) do
-    if playerName == UnitName("player") or IsSameFactionAsMe(playerRace,player.race) then
+    if playerName == UnitName("player") or IsSameFactionAsMe(player.race,player.class,playerRace) then
       table.insert(t, {playerName, player.class, player.thisWeekHonor, player.lastWeekHonor, player.standing, player.RP, player.rank, player.last_checked})
     end
   end
