@@ -226,7 +226,10 @@ function HonorSpy:Report(playerOfInterest)
     local standing = -1;
     local t = HonorSpyStandings:BuildStandingsTable()
     local avg_lastchecked = 0;
-    local pool_size = 1200; --turtle wow boosts pool to 1200 size (can't confirm myself)
+    
+    --turtle wow boosts pool to 800 (can't confirm myself) according to this 
+    --https://github.com/gwetchen/HonorSpyTurtle/commit/fdfd90689c00db9cd92f29eaf6d306eff2d4081c
+    local pool_size = 800;
     for _,record in pairs(t)  do
       if record[5] > pool_size then
         pool_size = record[5]
