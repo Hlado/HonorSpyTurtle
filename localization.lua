@@ -26,6 +26,8 @@ L:RegisterTranslations("enUS", function() return {
 	["Standing"] = true,
 	["Bracket"] = true,
 	["current RP"] = true,
+    ["decay"] = true,
+    ["RP gain"] = true,
 	["Next Week RP"] = true,
 	["Current Rank"] = true,
 	["Next Week Rank"] = true,

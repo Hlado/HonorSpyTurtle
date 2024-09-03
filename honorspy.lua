@@ -222,12 +222,16 @@ function HonorSpy:Report(playerOfInterest)
 	end
 	playerOfInterest = string.upper(string.sub(playerOfInterest, 1, 1))..string.lower(string.sub(playerOfInterest, 2))
 
-	local pool_size = 0;
 	local standing = -1;
 	local t = HonorSpyStandings:BuildStandingsTable()
 	local avg_lastchecked = 0;
-	pool_size = table.getn(t);
-	pool_size = 1200; --turtle put poolsize to 1200 to boost the pool
+    local pool_size = 1200; --turtle wow boosts pool to 1200 size (can't confirm myself)
+    for _,record in pairs(t)  do
+      if record[5] > pool_size then
+        pool_size = record[5]
+      end
+    end
+
 	for i = 1, table.getn(t) do
 		if (playerOfInterest == t[i][1]) then
 			standing = i
@@ -258,8 +262,9 @@ function HonorSpy:Report(playerOfInterest)
 		RP[i] = (i-2) * 1000;
 		Ranks[i] = (i-2) * 5000;
 	end
-	local award = RP[my_bracket] + 1000 * inside_br_progress;
+	local award = math.floor(RP[my_bracket] + 1000 * inside_br_progress+.5);
 	local RP = HonorSpy.db.realm.hs.currentStandings[playerOfInterest].RP;
+    local decay = math.floor(RP*0.2+.5) --prob wrong rounding but doesn't matter that much
 	local EstRP = math.floor(RP*0.8+award+.5);
 	local Rank = HonorSpy.db.realm.hs.currentStandings[playerOfInterest].rank;
 	local EstRank = 14;
@@ -275,7 +280,7 @@ function HonorSpy:Report(playerOfInterest)
 	if (playerOfInterest ~= playerName) then
 		SendChatMessage("- HonorSpy v"..tostring(VERSION)..": "..L["Report for player"].." "..playerOfInterest,"emote")
 	end
-	SendChatMessage("- HonorSpy v"..tostring(VERSION)..": "..L["Pool Size"].." = "..pool_size..", "..L["Standing"].." = "..standing..",  "..L["Bracket"].." = "..my_bracket..",  "..L["current RP"].." = "..RP..",  "..L["Next Week RP"].." = "..EstRP,"emote")
+	SendChatMessage("- HonorSpy v"..tostring(VERSION)..": "..L["Pool Size"].." = "..pool_size..", "..L["Standing"].." = "..standing..",  "..L["Bracket"].." = "..my_bracket..",  "..L["current RP"].." = "..RP..",  "..L["decay"].." = "..decay..",  "..L["RP gain"].." = "..award..",  "..L["Next Week RP"].." = "..EstRP,"emote")
 	SendChatMessage("- HonorSpy v"..tostring(VERSION)..": "..L["Current Rank"].." = "..Rank.." ("..Progress.."%), "..L["Next Week Rank"].." = "..EstRank.." ("..EstProgress.."%)", "emote")
 end
 
