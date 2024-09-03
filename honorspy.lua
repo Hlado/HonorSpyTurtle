@@ -100,7 +100,7 @@ function HonorSpy:INSPECT_HONOR_UPDATE()
     player.last_checked = time();
     player.RP = 0;
 
-    if (thisweekHK >= 15) then
+    if (thisweekHK >= 1) then
         if (player.rank >= 3) then
             player.RP = math.ceil((player.rank-2) * 5000 + player.rankProgress * 5000)
         elseif (player.rank == 2) then
@@ -379,7 +379,7 @@ function store_player(playerName, player)
       return
     end
 
-    if player.race == nil and localPlayer ~= nil localPlayer.race ~= nil then
+    if player.race == nil and localPlayer ~= nil and localPlayer.race ~= nil then
       player.race = localPlayer.race
     end
     HonorSpy.db.realm.hs.currentStandings[playerName] = player;
