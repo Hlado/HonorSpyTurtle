@@ -284,7 +284,7 @@ function HonorSpy:Report(playerOfInterest)
     if (playerOfInterest ~= playerName) then
         SendChatMessage("- HonorSpy v"..tostring(VERSION)..": "..L["Report for player"].." "..playerOfInterest,"emote")
     end
-    SendChatMessage("- HonorSpy v"..tostring(VERSION)..": "..L["Pool Size"].." = "..pool_size..", "..L["Standing"].." = "..standing..",  "..L["Bracket"].." = "..my_bracket..",  "..L["current RP"].." = "..RP..",  "..L["decay"].." = "..decay..",  "..L["RP gain"].." = "..award..",  "..L["Next Week RP"].." = "..EstRP,"emote")
+    SendChatMessage("- HonorSpy v"..tostring(VERSION)..": "..L["Pool Size"].." = "..pool_size.."("..table.getn(t).."), "..L["Standing"].." = "..standing..",  "..L["Bracket"].." = "..my_bracket..",  "..L["current RP"].." = "..RP..",  "..L["decay"].." = "..decay..",  "..L["RP gain"].." = "..award..",  "..L["Next Week RP"].." = "..EstRP,"emote")
     SendChatMessage("- HonorSpy v"..tostring(VERSION)..": "..L["Current Rank"].." = "..Rank.." ("..Progress.."%), "..L["Next Week Rank"].." = "..EstRank.." ("..EstProgress.."%)", "emote")
 end
 
