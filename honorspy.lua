@@ -218,6 +218,11 @@ HonorSpy:RegisterChatCommand({"/honorspy", "/hs"}, options)
 
 -- REPORT
 function HonorSpy:Report(playerOfInterest)
+    if HonorSpy.db.realm.hs.sort ~= "ThisWeekHonor" then
+        DEFAULT_CHAT_FRAME:AddMessage('|cffFF2020HonorSpy ERROR: set sorting mode to ThisWeekHonor before reporting|r')
+        return
+    end
+
     if (not playerOfInterest) then
         playerOfInterest = playerName
     end
