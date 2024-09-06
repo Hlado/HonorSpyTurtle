@@ -18,6 +18,7 @@ L:RegisterTranslations("enUS", function() return {
 	["All data was purged"] = true,
 	["Show HonorSpy Standings"] = true,
 	["Report specific player standings"] = true,
+    ["Ignore specific player"] = true,
 	["player_name"] = true,
 	["Player %s not found in table"] = true,
 	

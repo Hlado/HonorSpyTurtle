@@ -6,6 +6,7 @@ HonorSpy:RegisterDB("HonorSpyDB")
 HonorSpy:RegisterDefaults('realm', {
     hs = {
         currentStandings = {},
+        ignored = {},
         last_reset = 0,
         sort = L["ThisWeekHonor"],
         limit = 750
@@ -120,6 +121,7 @@ function resetWeek(must_reset_on)
     HonorSpy.db.realm.hs.last_reset = must_reset_on;
     inspectedPlayers = {};
     HonorSpy.db.realm.hs.currentStandings={};
+    HonorSpy.db.realm.hs.ignored={};
     HonorSpyStandings:Refresh();
     HonorSpy:Print(L["Weekly data was reset"]);
 end
@@ -148,6 +150,7 @@ StaticPopupDialogs["PURGE_DATA"] = {
     OnAccept = function()
         inspectedPlayers = {};
         HonorSpy.db.realm.hs.currentStandings={};
+        HonorSpy.db.realm.hs.ignored={};
         HonorSpyStandings:Refresh();
         HonorSpy:Print(L["All data was purged"]);
     end,
@@ -212,6 +215,14 @@ local options = {
             get = false,
             set = function(playerName) HonorSpy:Report(playerName) end
         },
+        ignore = {
+            type = 'text',
+            name = L['Ignore specific player'],
+            desc = L['Ignore specific player'],
+            usage = L['player_name'],
+            get = false,
+            set = function(playerName) HonorSpy:Ignore(playerName) end
+        }
     }
 }
 HonorSpy:RegisterChatCommand({"/honorspy", "/hs"}, options)
@@ -291,6 +302,17 @@ function HonorSpy:Report(playerOfInterest)
     end
     SendChatMessage("- HonorSpy v"..tostring(VERSION)..": "..L["Pool Size"].." = "..pool_size.."("..table.getn(t).."), "..L["Standing"].." = "..standing..",  "..L["Bracket"].." = "..my_bracket..",  "..L["current RP"].." = "..RP..",  "..L["decay"].." = "..decay..",  "..L["RP gain"].." = "..award..",  "..L["Next Week RP"].." = "..EstRP,"emote")
     SendChatMessage("- HonorSpy v"..tostring(VERSION)..": "..L["Current Rank"].." = "..Rank.." ("..Progress.."%), "..L["Next Week Rank"].." = "..EstRank.." ("..EstProgress.."%)", "emote")
+end
+
+--IGNORE
+function HonorSpy:Ignore(playerName)
+    if string.lower(playerName) == "reset" then
+        self.db.realm.hs.ignored = {}
+    else
+        self.db.realm.hs.ignored[playerName] = not self.db.realm.hs.ignored[playerName]
+    end
+    
+    HonorSpyStandings:Refresh()
 end
 
 -- MINIMAP

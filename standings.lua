@@ -65,7 +65,7 @@ function HonorSpyStandings:BuildStandingsTable()
   local t = { }
   local _,playerRace = UnitRace("player")
   for playerName, player in pairs(HonorSpy.db.realm.hs.currentStandings) do
-    if playerName == UnitName("player") or IsSameFactionAsMe(player.race,player.class,playerRace) then
+    if not HonorSpy.db.realm.hs.ignored[playerName] and (playerName == UnitName("player") or IsSameFactionAsMe(player.race,player.class,playerRace)) then
       table.insert(t, {playerName, player.class, player.thisWeekHonor, player.lastWeekHonor, player.standing, player.RP, player.rank, player.last_checked})
     end
   end
